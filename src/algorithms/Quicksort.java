@@ -10,8 +10,9 @@ package algorithms;
  * @author bradl
  */
 public class Quicksort {
-    
-    private static int[] mData;    
+
+    private static int[] mData;
+
     public static int[] sort(int[] data) {
         mData = data;
         quickSort(0, data.length - 1);
@@ -20,21 +21,32 @@ public class Quicksort {
 
     private static void quickSort(int first, int last) {
         if (first < last) {
-            int pivot = (last - first) / 2 + first;
-            int pivotValue = mData[pivot];
-            //swap first element and pivot
-            swap(first, pivot);
-            pivot = first;
-            int i = first + 1;
-            for (; i <= last; i++) {
-                if (mData[i] < pivotValue) {
-                    swap(i, pivot);
-                    swap(i, pivot + 1);
-                    pivot++;
-                }
+            int pivotPosition = Partition(first, last);
+            quickSort(first, pivotPosition);
+            quickSort(pivotPosition + 1, last);
+        }
+    }
+
+    private static int Partition(int left, int right) {
+        int pivot = medianOfThree(left, right);
+        int pivotValue = mData[pivot];
+
+        int i = left - 1;
+        int j = right + 1;
+
+        while (true) {
+            do {
+                i++;
+            } while (mData[i] < pivotValue);
+
+            do {
+                j--;
+            } while (mData[j] > pivotValue);
+
+            if (i >= j) {
+                return j;
             }
-            quickSort(first, pivot - 1);
-            quickSort(pivot + 1, last);
+            swap(i, j);
         }
     }
 
@@ -42,5 +54,18 @@ public class Quicksort {
         int t = mData[one];
         mData[one] = mData[two];
         mData[two] = t;
+    }
+
+    private static int medianOfThree(int left, int right) {
+        int middleIndex = (left + right) / 2;
+        int rightData = mData[right];
+        int leftData = mData[left];
+
+        int middleData = mData[middleIndex];
+
+        return ((leftData - middleData) * (middleData - rightData) > - 1 ? middleIndex : ((leftData - middleData) * (leftData - rightData) < 1 ? left : right));
+    }
+
+    private Quicksort() {
     }
 }
