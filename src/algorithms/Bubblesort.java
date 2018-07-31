@@ -25,4 +25,7 @@ public class Bubblesort {
         return data;
     }
 
+    private Bubblesort() {
+    }
+
 }

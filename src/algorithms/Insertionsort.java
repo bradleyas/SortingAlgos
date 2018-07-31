@@ -21,4 +21,7 @@ public class Insertionsort {
         }
         return data;
     }
+
+    private Insertionsort() {
+    }
 }
